@@ -1,0 +1,8 @@
+{
+  "name": "pixijs-8.21.0-bug-reproductions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node server.mjs" },
+  "dependencies": { "pixi.js": "8.21.0" }
+}
