@@ -16,6 +16,7 @@ Open:
 - <http://127.0.0.1:4173/ktx/>
 - <http://127.0.0.1:4173/dds/>
 - <http://127.0.0.1:4173/accessibility/>
+- <http://127.0.0.1:4173/canvas-observer/>
 
 ## Reproductions
 
@@ -33,6 +34,10 @@ Open:
 
 `dds/repro.js` compares valid DX10 DDS files. One-level `R8_UNORM` and two-level `R8G8B8A8_UNORM` controls parse successfully. Two-level `R8_UNORM`, `R8G8_UNORM`, and `R16_UNORM` files throw `RangeError` because the parser calculates every uncompressed level as four bytes per pixel.
 
+### `CanvasObserver`: fallback ticker listener survives destruction
+
+`canvas-observer/repro.js` removes `ResizeObserver` to select the documented ticker fallback, then compares `Ticker.shared.count` before creation, after destruction, and after ten create/destroy cycles. Every destroyed observer leaves one listener behind because `_tickerAttached` is never set to `true` when the listener is added.
+
 ## Expected result
 
-All three pages begin with `REPRODUCED:`. They were verified together in headed Camoufox. No PixiJS source is modified.
+All four pages begin with `REPRODUCED:`. They were verified in headed Camoufox. No PixiJS source is modified.
