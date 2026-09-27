@@ -19,6 +19,7 @@ Open:
 - <http://127.0.0.1:4173/canvas-observer/>
 - <http://127.0.0.1:4173/dom-container-replacement/>
 - <http://127.0.0.1:4173/webgpu-cache-key-collision/>
+- <http://127.0.0.1:4173/asset-load-unload-race/>
 
 ## Reproductions
 
@@ -48,6 +49,10 @@ Open:
 
 `webgpu-cache-key-collision/repro.js` follows pipeline creation order for two valid programs on the same geometry: a procedural program without vertex attributes, then a program using `aPosition` at location 0. Both receive attribute key 1 because `createIdFromString` looks up strings globally while allocating IDs per group. The second program reuses the first program's empty vertex-layout and binding-name cache entries.
 
+### Assets load/unload race returns and caches a destroyed texture
+
+`asset-load-unload-race/repro.js` starts a real PNG load, overlaps `Assets.unload()` with a second `Assets.load()` for the same URL, and shows that both callers resolve to one texture that unload immediately destroys. The global cache still points to that destroyed texture. Query parameters provide load-only and sequential unload/reload controls.
+
 ## Expected result
 
-All six pages were verified in headed Camoufox. No PixiJS source is modified.
+All seven pages were verified in headed Camoufox. No PixiJS source is modified.
