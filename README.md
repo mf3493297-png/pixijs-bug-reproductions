@@ -21,6 +21,7 @@ Open:
 - <http://127.0.0.1:4173/webgpu-cache-key-collision/>
 - <http://127.0.0.1:4173/asset-load-unload-race/>
 - <http://127.0.0.1:4173/gpu-entrypoint-key-collision/>
+- <http://127.0.0.1:4173/ubo-size-signature-collision/>
 
 ## Reproductions
 
@@ -58,6 +59,10 @@ Open:
 
 `gpu-entrypoint-key-collision/repro.js` constructs two programs from one valid WGSL module using entry-point pairs `ab/c` and `a/bc`. `_layoutKey` concatenates the names without delimiters, so both programs receive the same key and the pipeline cache returns the first program's pipeline for the second.
 
+### `UniformGroup` array-size signature collision
+
+`ubo-size-signature-collision/repro.js` creates a scalar `f32` group followed by an `f32` array of four under the same uniform name. Both groups receive one signature because `size` is omitted. The array group reuses the scalar sync function and uploads `[NaN, 0, 0, 0]`; creating the array first uploads `[1, 2, 3, 4]`.
+
 ## Expected result
 
-All eight pages were verified in headed Camoufox. No PixiJS source is modified.
+All nine pages were verified in headed Camoufox. No PixiJS source is modified.
