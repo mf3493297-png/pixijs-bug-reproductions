@@ -20,6 +20,7 @@ Open:
 - <http://127.0.0.1:4173/dom-container-replacement/>
 - <http://127.0.0.1:4173/webgpu-cache-key-collision/>
 - <http://127.0.0.1:4173/asset-load-unload-race/>
+- <http://127.0.0.1:4173/gpu-entrypoint-key-collision/>
 
 ## Reproductions
 
@@ -53,6 +54,10 @@ Open:
 
 `asset-load-unload-race/repro.js` starts a real PNG load, overlaps `Assets.unload()` with a second `Assets.load()` for the same URL, and shows that both callers resolve to one texture that unload immediately destroys. The global cache still points to that destroyed texture. Query parameters provide load-only and sequential unload/reload controls.
 
+### `GpuProgram` entry-point key collision
+
+`gpu-entrypoint-key-collision/repro.js` constructs two programs from one valid WGSL module using entry-point pairs `ab/c` and `a/bc`. `_layoutKey` concatenates the names without delimiters, so both programs receive the same key and the pipeline cache returns the first program's pipeline for the second.
+
 ## Expected result
 
-All seven pages were verified in headed Camoufox. No PixiJS source is modified.
+All eight pages were verified in headed Camoufox. No PixiJS source is modified.
