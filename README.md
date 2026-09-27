@@ -18,6 +18,7 @@ Open:
 - <http://127.0.0.1:4173/accessibility/>
 - <http://127.0.0.1:4173/canvas-observer/>
 - <http://127.0.0.1:4173/dom-container-replacement/>
+- <http://127.0.0.1:4173/webgpu-cache-key-collision/>
 
 ## Reproductions
 
@@ -43,6 +44,10 @@ Open:
 
 `dom-container-replacement/repro.js` renders element A, assigns element B through the documented `element` setter, and renders again. Both elements remain attached. Destroying the container removes B but leaves A orphaned. Query parameters provide controls for replacement before first render and removal through the stage.
 
+### WebGPU attribute-layout cache collision
+
+`webgpu-cache-key-collision/repro.js` follows pipeline creation order for two valid programs on the same geometry: a procedural program without vertex attributes, then a program using `aPosition` at location 0. Both receive attribute key 1 because `createIdFromString` looks up strings globally while allocating IDs per group. The second program reuses the first program's empty vertex-layout and binding-name cache entries.
+
 ## Expected result
 
-All five pages were verified in headed Camoufox. No PixiJS source is modified.
+All six pages were verified in headed Camoufox. No PixiJS source is modified.
