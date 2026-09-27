@@ -17,6 +17,7 @@ Open:
 - <http://127.0.0.1:4173/dds/>
 - <http://127.0.0.1:4173/accessibility/>
 - <http://127.0.0.1:4173/canvas-observer/>
+- <http://127.0.0.1:4173/dom-container-replacement/>
 
 ## Reproductions
 
@@ -38,6 +39,10 @@ Open:
 
 `canvas-observer/repro.js` removes `ResizeObserver` to select the documented ticker fallback, then compares `Ticker.shared.count` before creation, after destruction, and after ten create/destroy cycles. Every destroyed observer leaves one listener behind because `_tickerAttached` is never set to `true` when the listener is added.
 
+### `DOMContainer`: replacing a rendered element leaves the old element attached
+
+`dom-container-replacement/repro.js` renders element A, assigns element B through the documented `element` setter, and renders again. Both elements remain attached. Destroying the container removes B but leaves A orphaned. Query parameters provide controls for replacement before first render and removal through the stage.
+
 ## Expected result
 
-All four pages begin with `REPRODUCED:`. They were verified in headed Camoufox. No PixiJS source is modified.
+All five pages were verified in headed Camoufox. No PixiJS source is modified.
